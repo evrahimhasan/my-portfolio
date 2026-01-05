@@ -1,5 +1,6 @@
 import { ExternalLink, Github, Code, Folder, Star, GitFork } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { motion } from 'framer-motion';
 
 const projects = [
   {
@@ -41,6 +42,28 @@ const projects = [
 ];
 
 const ProjectsSection = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.25, 0.46, 0.45, 0.94] as const,
+      },
+    },
+  };
+
   return (
     <section id="projects" className="bg-background relative overflow-hidden">
       {/* Background decorations */}
@@ -48,7 +71,13 @@ const ProjectsSection = () => {
       <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
       
       <div className="container-custom section-padding relative">
-        <div className="text-center mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
             <Folder className="w-4 h-4" />
             PORTFOLIO
@@ -59,11 +88,18 @@ const ProjectsSection = () => {
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
             Here are some of the projects I've worked on. Each project represents my commitment to clean code, beautiful design, and user-focused development.
           </p>
-        </div>
+        </motion.div>
 
         {/* Featured Project */}
         {projects.filter(p => p.featured).map((project) => (
-          <div key={project.title} className="bg-card rounded-3xl shadow-card overflow-hidden mb-12 group hover:shadow-xl transition-all duration-500 border border-border/30">
+          <motion.div
+            key={project.title}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7 }}
+            className="bg-card rounded-3xl shadow-card overflow-hidden mb-12 group hover:shadow-xl transition-all duration-500 border border-border/30"
+          >
             <div className="grid lg:grid-cols-2">
               <div className={`aspect-video lg:aspect-auto bg-gradient-to-br ${project.color} flex items-center justify-center p-8 relative overflow-hidden`}>
                 {/* Animated background */}
@@ -123,14 +159,21 @@ const ProjectsSection = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
 
         {/* Other Projects */}
-        <div className="grid md:grid-cols-2 gap-6">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="grid md:grid-cols-2 gap-6"
+        >
           {projects.filter(p => !p.featured).map((project, index) => (
-            <div 
-              key={project.title} 
+            <motion.div 
+              key={project.title}
+              variants={itemVariants}
               className="bg-card rounded-2xl shadow-soft overflow-hidden border border-border/30 hover:border-primary/30 transition-all duration-500 group hover:-translate-y-2 hover:shadow-xl"
             >
               <div className={`aspect-video bg-gradient-to-br ${project.color} flex items-center justify-center relative overflow-hidden`}>
@@ -172,9 +215,9 @@ const ProjectsSection = () => {
                   </a>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,4 +1,5 @@
 import { Code, Palette, Smartphone, Server, ArrowRight, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const services = [
   {
@@ -32,6 +33,28 @@ const services = [
 ];
 
 const ServicesSection = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.25, 0.46, 0.45, 0.94] as const,
+      },
+    },
+  };
+
   return (
     <section id="services" className="bg-card relative overflow-hidden">
       {/* Background decorations */}
@@ -39,7 +62,13 @@ const ServicesSection = () => {
       <div className="absolute bottom-10 left-20 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
       
       <div className="container-custom section-padding relative">
-        <div className="text-center mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
             <Sparkles className="w-4 h-4" />
             SERVICES
@@ -50,14 +79,20 @@ const ServicesSection = () => {
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
             I offer a range of web development services to help bring your ideas to life with clean, modern, and functional solutions.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        >
           {services.map((service, index) => (
-            <div
+            <motion.div
               key={service.title}
+              variants={itemVariants}
               className="group relative bg-background rounded-2xl p-6 shadow-soft border border-border/30 hover:border-primary/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl"
-              style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Floating emoji */}
               <div className="absolute -top-4 -right-4 text-3xl opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:-translate-y-2">
@@ -84,12 +119,18 @@ const ServicesSection = () => {
               
               {/* Bottom gradient line */}
               <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${service.gradient} rounded-b-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Stats row */}
-        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+          className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6"
+        >
           {[
             { number: '10+', label: 'Projects Completed', emoji: '🚀' },
             { number: '3+', label: 'Years Experience', emoji: '⚡' },
@@ -104,7 +145,7 @@ const ServicesSection = () => {
               <div className="text-sm text-muted-foreground">{stat.label}</div>
             </div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

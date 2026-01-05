@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { Sparkles, Zap, Code2, Database, Palette, Globe } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const skills = [
   { name: 'JavaScript', level: 90, color: 'from-yellow-400 to-orange-500' },
@@ -53,6 +54,28 @@ const SkillsSection = () => {
     return () => observer.disconnect();
   }, []);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.25, 0.46, 0.45, 0.94] as const,
+      },
+    },
+  };
+
   return (
     <section id="skills" className="bg-background relative overflow-hidden" ref={sectionRef}>
       {/* Background decorations */}
@@ -65,7 +88,13 @@ const SkillsSection = () => {
       <div className="absolute top-1/2 right-10 text-2xl animate-float opacity-20" style={{ animationDelay: '1s' }}>🚀</div>
 
       <div className="container-custom section-padding relative">
-        <div className="text-center mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
             <Sparkles className="w-4 h-4" />
             SKILLSET
@@ -77,21 +106,28 @@ const SkillsSection = () => {
             Building responsive, performance-optimized UIs with modern web technologies.
             Experienced in frontend frameworks and MERN stack development.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-16">
           {/* Skill Bars */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-3 mb-8">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            className="space-y-6"
+          >
+            <motion.div variants={itemVariants} className="flex items-center gap-3 mb-8">
               <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center">
                 <Zap className="w-5 h-5 text-primary-foreground" />
               </div>
               <h3 className="font-heading text-xl font-semibold text-foreground">Core Skills</h3>
-            </div>
+            </motion.div>
             
             {skills.map((skill, index) => (
-              <div 
-                key={skill.name} 
+              <motion.div 
+                key={skill.name}
+                variants={itemVariants}
                 className="group p-4 rounded-xl bg-card/50 border border-border/30 hover:border-primary/30 transition-all duration-300"
               >
                 <div className="flex justify-between mb-3">
@@ -113,39 +149,45 @@ const SkillsSection = () => {
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Technology Tags */}
-          <div>
-            <div className="flex items-center gap-3 mb-8">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+          >
+            <motion.div variants={itemVariants} className="flex items-center gap-3 mb-8">
               <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center">
                 <Code2 className="w-5 h-5 text-primary-foreground" />
               </div>
               <h3 className="font-heading text-xl font-semibold text-foreground">Technologies I Use</h3>
-            </div>
+            </motion.div>
             
-            <div className="flex flex-wrap gap-3 mb-10">
+            <motion.div variants={itemVariants} className="flex flex-wrap gap-3 mb-10">
               {technologies.map((tech, index) => (
-                <span
+                <motion.span
                   key={tech.name}
-                  className={`px-4 py-3 bg-card border border-border/50 text-foreground rounded-xl font-medium text-sm transition-all duration-300 hover:border-primary hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1 cursor-default flex items-center gap-2 ${
-                    isVisible ? 'animate-scale-in opacity-0' : 'opacity-0'
-                  }`}
-                  style={{
-                    animationDelay: `${index * 0.05}s`,
-                    animationFillMode: 'forwards',
-                  }}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                  className="px-4 py-3 bg-card border border-border/50 text-foreground rounded-xl font-medium text-sm transition-all duration-300 hover:border-primary hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1 cursor-default flex items-center gap-2"
                 >
                   <span>{tech.icon}</span>
                   {tech.name}
-                </span>
+                </motion.span>
               ))}
-            </div>
+            </motion.div>
 
             {/* Areas of Expertise */}
-            <div className="p-6 bg-gradient-to-br from-card to-card/50 rounded-2xl border border-border/50 shadow-card">
+            <motion.div
+              variants={itemVariants}
+              className="p-6 bg-gradient-to-br from-card to-card/50 rounded-2xl border border-border/50 shadow-card"
+            >
               <h4 className="font-semibold text-foreground mb-6 flex items-center gap-2">
                 <span className="text-xl">🎯</span>
                 Areas of Expertise
@@ -160,8 +202,8 @@ const SkillsSection = () => {
                   </li>
                 ))}
               </ul>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>
