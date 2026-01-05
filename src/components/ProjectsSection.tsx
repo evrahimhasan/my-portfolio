@@ -9,33 +9,33 @@ const projects = [
     role: 'Full-stack development; backend API design and integration with frontend.',
     technologies: ['React', 'React Router DOM', 'Tailwind CSS', 'DaisyUI', 'Axios', 'SweetAlert2', 'Node.js', 'Express.js', 'MongoDB', 'Firebase Auth'],
     image: '/placeholder.svg',
-    github: 'https://github.com/evrahimhasan',
-    live: '#',
+    github: 'https://github.com/evrahimhasan/PawMart-Client-Assignment.git',
+    live: 'https://hilarious-unicorn-e9a47f.netlify.app/',
     featured: true,
     emoji: '🐾',
     color: 'from-orange-500 to-pink-500',
   },
   {
-    title: 'Ticket Booking System',
+    title: 'Blood Donation',
     description: 'A semester project featuring a complete ticket booking solution with seat selection, payment processing, and booking management.',
-    role: 'Frontend development and UI design',
-    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Bootstrap'],
+    role: 'Full-stack development; backend API design and integration with frontend.',
+    technologies: ['React', 'React Router DOM', 'JavaScript', 'Tailwind CSS', 'DaisyUI', 'Axios', 'SweetAlert2', 'Node.js', 'Express.js', 'MongoDB', 'Firebase Auth'],
     image: '/placeholder.svg',
-    github: 'https://github.com/evrahimhasan',
-    live: '#',
-    featured: false,
+    github: 'https://github.com/evrahimhasan/blood-dontaion-client.git',
+    live: 'https://animated-gumption-14cb8d.netlify.app/',
+    featured: true,
     emoji: '🎫',
     color: 'from-blue-500 to-purple-500',
   },
   {
-    title: 'Portfolio Website',
+    title: 'Green Nest',
     description: 'A responsive personal portfolio showcasing projects, skills, and professional experience with modern design and animations.',
     role: 'Design and Development',
     technologies: ['React', 'Tailwind CSS', 'TypeScript'],
     image: '/placeholder.svg',
     github: 'https://github.com/evrahimhasan',
-    live: '#',
-    featured: false,
+    live: 'https://gentle-chaja-fbdfee.netlify.app/',
+    featured: true,
     emoji: '💼',
     color: 'from-green-500 to-teal-500',
   },
@@ -69,7 +69,7 @@ const ProjectsSection = () => {
       {/* Background decorations */}
       <div className="absolute top-20 left-10 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
       <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
-      
+
       <div className="container-custom section-padding relative">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -108,7 +108,7 @@ const ProjectsSection = () => {
                   <div className="absolute bottom-10 right-10 w-32 h-32 bg-white/10 rounded-full animate-float" style={{ animationDelay: '1s' }} />
                   <div className="absolute top-1/2 left-1/2 w-16 h-16 bg-white/15 rounded-full animate-float" style={{ animationDelay: '2s' }} />
                 </div>
-                
+
                 <div className="text-center relative z-10">
                   <div className="w-24 h-24 bg-white/20 backdrop-blur-sm rounded-3xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-500">
                     <span className="text-5xl">{project.emoji}</span>
@@ -171,7 +171,7 @@ const ProjectsSection = () => {
           className="grid md:grid-cols-2 gap-6"
         >
           {projects.filter(p => !p.featured).map((project, index) => (
-            <motion.div 
+            <motion.div
               key={project.title}
               variants={itemVariants}
               className="bg-card rounded-2xl shadow-soft overflow-hidden border border-border/30 hover:border-primary/30 transition-all duration-500 group hover:-translate-y-2 hover:shadow-xl"
@@ -195,19 +195,19 @@ const ProjectsSection = () => {
                   ))}
                 </div>
                 <div className="flex gap-4">
-                  <a 
-                    href={project.github} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm"
                   >
                     <Github className="w-5 h-5" />
                     Code
                   </a>
-                  <a 
-                    href={project.live} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                  <a
+                    href={project.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm"
                   >
                     <ExternalLink className="w-5 h-5" />
