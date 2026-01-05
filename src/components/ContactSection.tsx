@@ -1,12 +1,18 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Send, Mail, Phone, MapPin, Linkedin, Github, MessageCircle, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import emailjs from '@emailjs/browser';
+
+const EMAILJS_SERVICE_ID = 'service_1j427eh';
+const EMAILJS_TEMPLATE_ID = 'template_rdd2wh6';
+const EMAILJS_PUBLIC_KEY = 'ZpYGjVB1YY8KgeEi4';
 
 const ContactSection = () => {
   const { toast } = useToast();
+  const formRef = useRef<HTMLFormElement>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,16 +24,30 @@ const ContactSection = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      await emailjs.sendForm(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        formRef.current!,
+        EMAILJS_PUBLIC_KEY
+      );
 
-    toast({
-      title: '✨ Message Sent!',
-      description: "Thank you for reaching out. I'll get back to you soon!",
-    });
+      toast({
+        title: '✨ Message Sent!',
+        description: "Thank you for reaching out. I'll get back to you soon!",
+      });
 
-    setFormData({ name: '', email: '', message: '' });
-    setIsSubmitting(false);
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      console.error('EmailJS error:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to send message. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
@@ -111,13 +131,14 @@ const ContactSection = () => {
               </div>
             </div>
             
-            <form onSubmit={handleSubmit} className="space-y-6 relative">
+            <form ref={formRef} onSubmit={handleSubmit} className="space-y-6 relative">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
                   Your Name
                 </label>
                 <Input
                   id="name"
+                  name="from_name"
                   type="text"
                   placeholder="John Doe"
                   value={formData.name}
@@ -130,6 +151,16 @@ const ContactSection = () => {
                 <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
                   Your Email
                 </label>
+                <Input
+                  id="email"
+                  name="reply_to"
+                  type="email"
+                  placeholder="john@example.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  required
+                  className="bg-secondary/50 border-border/50 focus:border-primary h-12 rounded-xl"
+                />
                 <Input
                   id="email"
                   type="email"
@@ -146,6 +177,7 @@ const ContactSection = () => {
                 </label>
                 <Textarea
                   id="message"
+                  name="message"
                   placeholder="Tell me about your project..."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
