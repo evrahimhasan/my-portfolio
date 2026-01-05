@@ -128,7 +128,11 @@ const HeroSection = () => {
                 </a>
               </Button>
               <Button variant="heroOutline" size="xl" asChild className="group">
-                <a href="#contact" className="flex items-center gap-2">
+                <a 
+                  href="/resume.pdf" 
+                  download="Evrahim_Hasan_Emran_Resume.pdf"
+                  className="flex items-center gap-2"
+                >
                   <Download className="w-5 h-5 group-hover:-translate-y-1 transition-transform" />
                   Download CV
                 </a>
