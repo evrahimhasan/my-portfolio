@@ -161,15 +161,6 @@ const ContactSection = () => {
                   required
                   className="bg-secondary/50 border-border/50 focus:border-primary h-12 rounded-xl"
                 />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="john@example.com"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
-                  className="bg-secondary/50 border-border/50 focus:border-primary h-12 rounded-xl"
-                />
               </div>
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
