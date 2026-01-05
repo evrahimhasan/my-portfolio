@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Mail } from 'lucide-react';
+import { Menu, X, Mail, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useTheme } from 'next-themes';
 
 const navLinks = [
   { name: 'Home', href: '#home' },
@@ -14,6 +15,12 @@ const navLinks = [
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +29,10 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
 
   return (
     <nav
@@ -49,8 +60,20 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
+          {/* Theme Toggle & CTA Button */}
+          <div className="hidden md:flex items-center gap-3">
+            {mounted && (
+              <button
+                onClick={toggleTheme}
+                className="relative p-2 rounded-full bg-secondary/50 hover:bg-secondary transition-colors duration-300 group"
+                aria-label="Toggle theme"
+              >
+                <div className="relative w-5 h-5">
+                  <Sun className={`absolute inset-0 w-5 h-5 text-primary transition-all duration-300 ${theme === 'dark' ? 'opacity-0 rotate-90 scale-0' : 'opacity-100 rotate-0 scale-100'}`} />
+                  <Moon className={`absolute inset-0 w-5 h-5 text-primary transition-all duration-300 ${theme === 'dark' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-0'}`} />
+                </div>
+              </button>
+            )}
             <Button variant="outline" size="sm" asChild>
               <a href="mailto:evrahimhasanemran@gmail.com" className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
@@ -60,13 +83,27 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-foreground"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          <div className="flex md:hidden items-center gap-2">
+            {mounted && (
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-full bg-secondary/50 hover:bg-secondary transition-colors duration-300"
+                aria-label="Toggle theme"
+              >
+                <div className="relative w-5 h-5">
+                  <Sun className={`absolute inset-0 w-5 h-5 text-primary transition-all duration-300 ${theme === 'dark' ? 'opacity-0 rotate-90 scale-0' : 'opacity-100 rotate-0 scale-100'}`} />
+                  <Moon className={`absolute inset-0 w-5 h-5 text-primary transition-all duration-300 ${theme === 'dark' ? 'opacity-0 -rotate-90 scale-0' : 'opacity-100 rotate-0 scale-100'}`} />
+                </div>
+              </button>
+            )}
+            <button
+              className="text-foreground"
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
