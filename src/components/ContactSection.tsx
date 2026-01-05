@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import emailjs from '@emailjs/browser';
+import { motion } from 'framer-motion';
 
 const EMAILJS_SERVICE_ID = 'service_1j427eh';
 const EMAILJS_TEMPLATE_ID = 'template_rdd2wh6';
@@ -16,6 +17,7 @@ const ContactSection = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    subject: '',
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -37,7 +39,7 @@ const ContactSection = () => {
         description: "Thank you for reaching out. I'll get back to you soon!",
       });
 
-      setFormData({ name: '', email: '', message: '' });
+      setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (error) {
       console.error('EmailJS error:', error);
       toast({
@@ -89,6 +91,28 @@ const ContactSection = () => {
     },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.25, 0.46, 0.45, 0.94] as const,
+      },
+    },
+  };
+
   return (
     <section id="contact" className="bg-card relative overflow-hidden">
       {/* Background decorations */}
@@ -100,7 +124,13 @@ const ContactSection = () => {
       <div className="absolute bottom-40 right-20 text-3xl animate-float opacity-20" style={{ animationDelay: '1s' }}>📧</div>
       
       <div className="container-custom section-padding relative">
-        <div className="text-center mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
             <MessageCircle className="w-4 h-4" />
             CONTACT
@@ -111,11 +141,17 @@ const ContactSection = () => {
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
             I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Form */}
-          <div className="bg-background rounded-3xl shadow-card p-8 border border-border/30 relative overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6 }}
+            className="bg-background rounded-3xl shadow-card p-8 border border-border/30 relative overflow-hidden"
+          >
             {/* Decorative corner */}
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full blur-2xl" />
             
@@ -132,32 +168,49 @@ const ContactSection = () => {
             </div>
             
             <form ref={formRef} onSubmit={handleSubmit} className="space-y-6 relative">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
-                  Your Name
-                </label>
-                <Input
-                  id="name"
-                  name="from_name"
-                  type="text"
-                  placeholder="John Doe"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                  className="bg-secondary/50 border-border/50 focus:border-primary h-12 rounded-xl"
-                />
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+                    Your Name
+                  </label>
+                  <Input
+                    id="name"
+                    name="from_name"
+                    type="text"
+                    placeholder="John Doe"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    required
+                    className="bg-secondary/50 border-border/50 focus:border-primary h-12 rounded-xl"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+                    Your Email
+                  </label>
+                  <Input
+                    id="email"
+                    name="reply_to"
+                    type="email"
+                    placeholder="john@example.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    required
+                    className="bg-secondary/50 border-border/50 focus:border-primary h-12 rounded-xl"
+                  />
+                </div>
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                  Your Email
+                <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">
+                  Subject
                 </label>
                 <Input
-                  id="email"
-                  name="reply_to"
-                  type="email"
-                  placeholder="john@example.com"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  id="subject"
+                  name="subject"
+                  type="text"
+                  placeholder="Project Inquiry"
+                  value={formData.subject}
+                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                   required
                   className="bg-secondary/50 border-border/50 focus:border-primary h-12 rounded-xl"
                 />
@@ -191,14 +244,21 @@ const ContactSection = () => {
                 )}
               </Button>
             </form>
-          </div>
+          </motion.div>
 
           {/* Contact Info */}
-          <div className="flex flex-col justify-center">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            className="flex flex-col justify-center"
+          >
             <div className="space-y-4 mb-10">
-              {contactInfo.map((item) => (
-                <a
+              {contactInfo.map((item, index) => (
+                <motion.a
                   key={item.label}
+                  variants={itemVariants}
                   href={item.href}
                   className="flex items-center gap-4 p-5 bg-background rounded-2xl shadow-soft border border-border/30 hover:border-primary/30 transition-all duration-300 group hover:-translate-y-1 hover:shadow-lg"
                 >
@@ -209,12 +269,15 @@ const ContactSection = () => {
                     <p className="text-sm text-muted-foreground">{item.label}</p>
                     <p className="font-semibold text-foreground group-hover:text-primary transition-colors">{item.value}</p>
                   </div>
-                </a>
+                </motion.a>
               ))}
             </div>
 
             {/* Social Links */}
-            <div className="bg-background rounded-2xl p-6 border border-border/30">
+            <motion.div
+              variants={itemVariants}
+              className="bg-background rounded-2xl p-6 border border-border/30"
+            >
               <p className="text-foreground font-medium mb-4 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-primary" />
                 Connect with me
@@ -233,14 +296,17 @@ const ContactSection = () => {
                   </a>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* Availability badge */}
-            <div className="mt-8 p-4 bg-green-500/10 border border-green-500/30 rounded-xl flex items-center gap-3">
+            <motion.div
+              variants={itemVariants}
+              className="mt-8 p-4 bg-green-500/10 border border-green-500/30 rounded-xl flex items-center gap-3"
+            >
               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
               <p className="text-foreground font-medium">Currently available for freelance work</p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>
