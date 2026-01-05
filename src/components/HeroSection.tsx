@@ -129,7 +129,7 @@ const HeroSection = () => {
               </Button>
               <Button variant="heroOutline" size="xl" asChild className="group">
                 <a 
-                  href="/resume.pdf" 
+                  href="/Evrahim_Hasan_Emran_Resume.pdf" 
                   download="Evrahim_Hasan_Emran_Resume.pdf"
                   className="flex items-center gap-2"
                 >
