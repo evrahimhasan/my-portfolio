@@ -145,13 +145,13 @@ const HeroSection = () => {
             animationFillMode: 'forwards'
           }}>
               {[{
-              value: '3+',
+              value: '1+',
               label: 'Years Experience'
             }, {
-              value: '20+',
+              value: '10+',
               label: 'Projects Completed'
             }, {
-              value: '15+',
+              value: '7+',
               label: 'Happy Clients'
             }].map(stat => <div key={stat.label} className="text-center lg:text-left">
                   <div className="text-3xl font-heading font-bold text-primary">{stat.value}</div>
